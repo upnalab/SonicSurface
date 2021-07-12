@@ -1,0 +1,143 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2013 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 64-Bit
+# Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+# Date created = 10:44:31  April 21, 2016
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		QuadrupleBuffer_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE6E22C8
+set_global_assignment -name TOP_LEVEL_ENTITY QuadrupleBuffer
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "10:44:31  APRIL 21, 2016"
+set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -entity DoubleBufferManualSwitch -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -entity DoubleBufferManualSwitch -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -entity DoubleBufferManualSwitch -section_id Top
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -entity acousticLevitation -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -entity acousticLevitation -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -entity acousticLevitation -section_id Top
+set_location_assignment PIN_49 -to RESET
+set_location_assignment PIN_12 -to EPCS_CLK
+set_location_assignment PIN_13 -to EPCS_DATA0
+set_location_assignment PIN_8 -to EPCS_SCE
+set_location_assignment PIN_6 -to EPCS_SDO
+set_location_assignment H_RIGHT_23 -to GND
+set_location_assignment H_RIGHT_2 -to 3.3V
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -entity acousticLevitation -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -entity DoubleBufferManualSwitch -section_id Top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
+set_location_assignment PIN_23 -to CLK
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name VHDL_FILE src/Distribute.vhd
+set_global_assignment -name VHDL_FILE src/DutyRef.vhd
+set_global_assignment -name VHDL_FILE src/DutyLine.vhd
+set_global_assignment -name VHDL_FILE src/Divider.vhd
+set_global_assignment -name VHDL_FILE src/PhaseRef.vhd
+set_global_assignment -name BDF_FILE src/QuadrupleBuffer.bdf
+set_global_assignment -name VHDL_FILE src/RSSFilter_1.vhd
+set_global_assignment -name VHDL_FILE src/UARTReader.vhd
+set_global_assignment -name VHDL_FILE src/PhaseLine.vhd
+set_global_assignment -name VHDL_FILE src/SwapField.vhd
+set_global_assignment -name QIP_FILE src/Masterclock.qip
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_location_assignment PIN_65 -to MISC_A
+set_location_assignment PIN_60 -to MISC_B
+set_location_assignment PIN_67 -to MISC_C
+set_location_assignment PIN_120 -to MISC_D
+set_location_assignment PIN_124 -to MISC_E
+set_location_assignment PIN_115 -to MISC_F
+set_location_assignment PIN_28 -to SHIFT_CLOCK_1
+set_location_assignment PIN_85 -to SHIFT_CLOCK_2
+set_location_assignment PIN_30 -to LATCH_CLOCK_1
+set_location_assignment PIN_84 -to LATCH_CLOCK_2
+
+
+set_global_assignment -name VHDL_FILE src/Counter.vhd
+set_global_assignment -name VHDL_FILE src/Mux8.vhd
+set_global_assignment -name VHDL_FILE src/AllChannels.vhd
+set_location_assignment PIN_59 -to DATA[0]
+set_location_assignment PIN_64 -to DATA[1]
+set_location_assignment PIN_66 -to DATA[2]
+set_location_assignment PIN_68 -to DATA[3]
+set_location_assignment PIN_112 -to DATA[4]
+set_location_assignment PIN_114 -to DATA[5]
+set_location_assignment PIN_119 -to DATA[6]
+set_location_assignment PIN_121 -to DATA[7]
+set_location_assignment PIN_73 -to DATA[8]
+set_location_assignment PIN_71 -to DATA[9]
+set_location_assignment PIN_69 -to DATA[10]
+set_location_assignment PIN_42 -to DATA[11]
+set_location_assignment PIN_141 -to DATA[12]
+set_location_assignment PIN_113 -to DATA[13]
+set_location_assignment PIN_111 -to DATA[14]
+set_location_assignment PIN_106 -to DATA[15]
+set_location_assignment PIN_54 -to DATA[16]
+set_location_assignment PIN_58 -to DATA[17]
+set_location_assignment PIN_52 -to DATA[18]
+set_location_assignment PIN_55 -to DATA[19]
+set_location_assignment PIN_126 -to DATA[20]
+set_location_assignment PIN_127 -to DATA[21]
+set_location_assignment PIN_129 -to DATA[22]
+set_location_assignment PIN_133 -to DATA[23]
+set_location_assignment PIN_53 -to DATA[24]
+set_location_assignment PIN_51 -to DATA[25]
+set_location_assignment PIN_49 -to DATA[26]
+set_location_assignment PIN_44 -to DATA[27]
+set_location_assignment PIN_137 -to DATA[28]
+set_location_assignment PIN_135 -to DATA[29]
+set_location_assignment PIN_132 -to DATA[30]
+set_location_assignment PIN_128 -to DATA[31]
+set_location_assignment PIN_3 -to LED[0]
+set_location_assignment PIN_7 -to LED[1]
+set_location_assignment PIN_10 -to LED[2]
+set_location_assignment PIN_11 -to LED[3]
+set_global_assignment -name CDF_FILE Chain2.cdf
+set_global_assignment -name VHDL_FILE src/PulseExpander.vhd
+set_global_assignment -name VHDL_FILE src/LatchBuffer.vhd
+set_global_assignment -name VHDL_FILE src/AmpModulator.vhd
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -1,0 +1,98 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity Waves_8_32 is
+    port (
+
+	-- ports
+	
+	data_in : in std_logic;
+	rdaddress : in std_logic_vector(11 downto 0);
+	rdclock : in std_logic;
+	wraddress : in std_logic_vector(17 downto 0);
+	wrclock : in std_logic;
+	wr_enable : in std_logic;
+	data_out : out std_logic_vector(63 downto 0)
+	
+	);
+end Waves_8_32;
+
+architecture Waves_8_32_arch of Waves_8_32 is
+
+-- signals
+
+signal rdaddress_intern : std_logic_vector(7 downto 0);
+signal wraddress_intern : std_logic_vector(12 downto 0);
+signal block_number_wr : std_logic_vector(4 downto 0);
+signal block_number_rd : std_logic_vector(4 downto 0);
+signal data_vector : std_logic_vector(0 downto 0);
+type output_type is array (0 to 27) of std_logic_vector(31 downto 0);
+signal outputs : output_type;
+signal wren : std_logic_vector(27 downto 0);
+
+-- components	
+
+component BRAM IS
+	PORT
+	(
+		data		: IN STD_LOGIC_VECTOR (0 DOWNTO 0);
+		rdaddress	: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+		rdclock		: IN STD_LOGIC ;
+		wraddress	: IN STD_LOGIC_VECTOR (12 DOWNTO 0);
+		wrclock		: IN STD_LOGIC  := '1';
+		wren		: IN STD_LOGIC  := '0';
+		q			: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+	);
+END component;
+
+
+begin
+
+-- insts
+
+insts : for i in 0 to 27 generate
+	begin
+		BRAM_inst : BRAM PORT MAP 
+		(
+			data		=> data_vector,
+			rdaddress	=> rdaddress_intern,
+			rdclock		=> rdclock,
+			wraddress	=> wraddress_intern,
+			wrclock		=> wrclock,
+			wren		=> wren(i),
+			q	 		=> outputs(i)
+		);
+
+
+end generate insts;
+
+ -- logic
+data_vector(0) <= data_in;
+
+wraddress_intern(4 downto 0) <= wraddress(4 downto 0);
+wraddress_intern(11 downto 5) <= wraddress(12 downto 6);
+wraddress_intern(12) <= wraddress(17);
+
+block_number_wr(4 downto 1) <= wraddress(16 downto 13);
+block_number_wr(0) <= wraddress(5);
+
+rdaddress_intern(6 downto 0) <= rdaddress(6 downto 0);
+rdaddress_intern(7) <= rdaddress(11);
+block_number_rd(4 downto 1) <= rdaddress(10 downto 7);
+block_number_rd(0) <= '0';
+
+
+wrenables : for i in 0 to 27 generate
+	begin
+		wren(i) <= (wr_enable = '1' and i = to_integer(unsigned(block_number_wr)));
+end generate wrenables;
+
+data_out(31 downto 0) <= outputs(to_integer(unsigned(block_number_rd)));
+data_out(63 downto 32) <= outputs(to_integer(unsigned(block_number_rd)) + 1);
+
+-- process
+
+
+
+end Waves_8_32_arch;

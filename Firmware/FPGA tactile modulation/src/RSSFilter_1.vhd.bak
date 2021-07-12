@@ -1,0 +1,32 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity RSSFilter_1 is
+	 generic(TAPS: integer := 7);
+    port (
+        clk : in  STD_LOGIC;
+        bit_in : in  STD_LOGIC;
+		  bit_out : out  STD_LOGIC
+	 );
+end RSSFilter_1;
+
+architecture Behavioral of RSSFilter_1 is
+    signal temporal: STD_LOGIC := '0';
+    signal counter : integer range 0 to MAX_COUNTER := 0;
+begin
+    pRSSFilter_1: process (reset, clk_in) begin
+        if (reset = '0') then
+            temporal <= '0';
+            counter <= 0;
+        elsif rising_edge(clk_in) then
+            if (counter = MAX_COUNTER) then
+                temporal <= NOT(temporal);
+                counter <= 0;
+            else
+                counter <= counter + 1;
+            end if;
+        end if;
+    end process;
+    
+    clk_out <= temporal;
+end Behavioral;

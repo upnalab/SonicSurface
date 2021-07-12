@@ -1,0 +1,1 @@
+Run Test.m to calculate the phases to emitt in order to get the target image. This algorithm is the base of the paper: "Generating Airborne Ultrasonic Amplitude Patterns Using an Open Hardware Phased Array"   https://www.mdpi.com/2076-3417/11/7/2981

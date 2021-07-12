@@ -1,0 +1,67 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity UARTSender is
+	 -- if clk is 50MHz and uart is working at 2Mhz then Oversample is 50/2 = 25
+	 generic(OVERSAMPLE: integer := 25);
+    port (
+        clk : in  STD_LOGIC;
+        bit_in : in  STD_LOGIC;
+		  reset  : in  STD_LOGIC;
+		  
+		  byte_ready : out STD_LOGIC := '0';
+		  q : out STD_LOGIC_VECTOR (7 downto 0)
+	 );
+end UARTSender;
+
+architecture Behavioral of UARTSender is
+    signal sampleCounter : integer range 0 to OVERSAMPLE*3/2 := 0;
+	 signal sampleCounterTarget : integer range 0 to OVERSAMPLE*3/2 := 0;
+	 signal bitCounter : integer range 0 to 8 := 0;
+	 signal data : STD_LOGIC_VECTOR (7 downto 0);
+	 signal sByteReady : std_logic := '0';
+	 
+	 TYPE State_type IS (Waiting0, WaitingBits);
+		SIGNAL state : State_Type := Waiting0;
+	
+begin
+    pUARTSender: process (reset, clk) begin
+        if (reset = '0') then -- async reset
+            state <= Waiting0;
+				sByteReady <= '0';
+        elsif ( rising_edge(clk) ) then
+				case state is
+					when Waiting0 =>
+						if (bit_in = '0') then
+							sByteReady <= '0';
+							state <= WaitingBits;
+							sampleCounter <= 0;
+							sampleCounterTarget <= (OVERSAMPLE*3/2) - 1;
+							bitCounter <= 0;
+						end if;
+					when WaitingBits =>
+						if (sampleCounter = sampleCounterTarget) then
+							if (bitCounter = 8) then -- this is the stop bit
+								sByteReady <= '1';
+								state <= Waiting0;
+							else
+								data <= bit_in & data(7 downto 1);
+								
+								sampleCounter <= 0;
+								sampleCounterTarget <= OVERSAMPLE - 1;
+								
+								bitCounter <= bitCounter + 1;
+							end if;
+								
+						else
+							sampleCounter <= sampleCounter + 1;
+						end if;
+						
+				end case;
+			end if;
+    end process;
+    
+	 byte_ready <= sByteReady;
+	 q <= data;
+	 
+end Behavioral;

@@ -1,0 +1,13 @@
+the size of the PCB is 183 x 169mm 2 layers
+
+128x MIC4127 SOIC8
+32x 74hc595 SOIC16
+160x 0.1uf capacitors 50v 0805
+1x dc barrel
+head connectors for the FPGA (2x22) and lateral connectors
+
+256x transducers ideally the ones used for TinyLev (Check for Instructables Acoustic Levitator)
+
+Other pin compatible drivers are: TC4427a or MIC4127  / MIC4478 for 32V but pricey as hell
+
+The FPGA is this one: https://www.waveshare.com/coreep4ce6.htm

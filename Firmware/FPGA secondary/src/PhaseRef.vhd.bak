@@ -1,0 +1,47 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.ALL;
+
+
+entity PhaseLine is
+    port (
+		  CLK : in  STD_LOGIC;
+		  reset  : in  STD_LOGIC := '1';
+		  set_in : in  STD_LOGIC := '0';
+		  phasein : in STD_LOGIC_VECTOR (7 downto 0);
+		  pulse_out : out STD_LOGIC := '0'
+	 );
+end PhaseLine;
+
+architecture Behavioral of PhaseLine is
+	 signal BitCounter : integer range 0 to 255 := 0;
+	 signal phaseValue : integer range 0 to 255 := 0;
+	 signal prevSet : std_logic := '1';
+	 
+begin
+    phase: process (reset, CLK) begin
+        if (reset = '1') then -- async reset
+				prevSet <= '0';
+				pulse_out <= '0';
+				BitCounter <= 0;
+				phaseValue <= 0;				
+        elsif (rising_edge(clk)) then
+				prevSet <= set_in;
+				if (set_in = '1' AND prevSet = '0') then
+					phaseValue <= to_integer(unsigned(phasein));
+				end if;
+			  --s_wren(i) <= '1' when (wr_enable = '1' and i = to_integer(unsigned(s_block_wr))) else '0';
+			  
+			  if (BitCounter = phaseValue) then 
+					pulse_out <= '1';
+			  else
+					pulse_out <= '0';
+			  end if;
+			  
+			  --pulse_out <= '1' when (BitCounter = phaseValue) else '0';
+			  BitCounter <= BitCounter + 1;
+		  end if;
+
+    end process;
+    
+end Behavioral;
