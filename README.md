@@ -10,6 +10,7 @@ Mech - Mechanical parts for 3d printing or lasercutting
 
 
 # How to Assemble and example Applications
-- Paper: https://doi.org/10.3390/app11072981
-- Instructables: Soon...
+- Instructables: https://www.instructables.com/SonicSurface-Phased-array-for-Levitation-Mid-air-T/
 - Video: https://www.youtube.com/watch?v=vAEZvYlUnEM
+- Paper: https://doi.org/10.3390/app11072981
+
