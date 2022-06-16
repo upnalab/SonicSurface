@@ -1,13 +1,13 @@
 function [amps, phases, ampSlice] = calcEmissionForTargetAmpSlice(targetAmpSlice, dist, iters, sliceSize,freq,soundSpeed,emitterSize, ampRes, phaseRes)
-%targetAmpSlice: a matrix containing the target amplitude, should be square the width a power of 2
+%targetAmpSlice: a matrix containing the target amplitude, should be square, and width a power of 2
 %dist: distance from the emitter slice to the target slice 
 %iters: iterations of the algorithm
 %sliceSize: side of the emission and target slice 
 %freq: of the waves
 %soundSpeed: the propagation speed
 %emitterSize: the diameter of the emitters
-%ampRes: levels of amplitude. 0 = no amplitude control
-%phaseRes: levels of phases
+%ampRes: amplitude resolution. 0 = no amplitude control
+%phaseRes: phase resolution
 
 [w,h] = size(targetAmpSlice);
 assert( w == h );
@@ -37,7 +37,7 @@ medium.soundspeed = soundSpeed;
 medium.attenuationdBcmMHz = 0; %for air we could use 1.61
 
 for ii=1:iters
-    %stamp targetAmpSlice into target. We keep the phase as it was.
+    %stamp targetAmpSlice into target. We retain the phases though.
     target = targetAmpSlice .* exp(1i * angle(target) );
     
     %backpropagate targetSlice back to emissionSlice
@@ -51,12 +51,12 @@ for ii=1:iters
     downPhase = imresize(phase, [nEmittersPerSide, nEmittersPerSide], 'bilinear');
     %discretize amp and phase
     if ampRes == 0
-        downAmp = downAmp .* 0 + 1; %all to ones
+        downAmp = downAmp .* 0 + 1; %set all to ones
     else
         downAmp = fix( downAmp*ampRes )/ampRes;
     end
     if phaseRes == 0
-        downPhase = downPhase .* 0; %all to zeros
+        downPhase = downPhase .* 0; %set all to zeros
     else
         downPhase = fix( downPhase/pi*phaseRes )*pi/phaseRes;
     end
@@ -65,21 +65,25 @@ for ii=1:iters
     phase = imresize(downPhase, [w, h], 'nearest');
     %apply Mask to emission, i.e. the circular shape of the emitters.
     amp = amp .* mask;
-    %combine amp and phase into complex representation
+    %combine amp and phase into its complex representation
     emission = amp .* exp(1i * phase );
     
     %propagate emission to target
     target = fftasa(emission,dist,medium, w,sliceSize/w,freq);
 end
+
   ampSlice = abs(target);
+  
   %extract amps and phases for each emitter  
   amps = zeros(1,nEmitters);
   phases = zeros(1,nEmitters);
   index = 1;
   for ix=1:nEmittersPerSide
     for iy=1:nEmittersPerSide
+        centerX = round(ix*emitterPx - emitterPx/2);
+        centerY = round(iy*emitterPx - emitterPx/2);
         %get the emission amp/phase at the center of the emitter
-        em = emission(ix*emitterPx - emitterPx/2, iy*emitterPx - emitterPx/2);
+        em = emission(centerX, centerY);
         amps(index) = abs(em);
         phases(index) = angle(em);
         index = index+1;
