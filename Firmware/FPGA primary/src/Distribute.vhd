@@ -51,17 +51,6 @@ begin
 						s_swap_out <= '1';
 						s_ByteCounter <= 0;
 						
-						
-					elsif (q_in = "10010110") then --150 is switch off clocks
-						s_debug_onShiftClocks <= '0';
-					elsif (q_in = "10010111") then --151 is switch on clocks
-						s_debug_onShiftClocks <= '1';
-						
-					elsif (q_in = "11000000") then --192 board 0
-						s_boardEnable <= '1';
-					elsif (q_in = "11000001") then --193 board 1
-						s_boardEnable <= '0';
-						
 					elsif (s_boardEnable = '1') then-- any other byte is for the delay lines. send only if the board is enabled
 						--s_data_out <= q_in;
 						s_address <= std_logic_vector(to_unsigned(s_ByteCounter, 8));

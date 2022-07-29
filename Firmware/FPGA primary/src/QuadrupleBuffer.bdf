@@ -208,24 +208,7 @@ applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect 568 -128 744 -112)
-	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
-	(text "MISC_D" (rect 90 0 131 12)(font "Arial" ))
-	(pt 0 8)
-	(drawing
-		(line (pt 0 8)(pt 52 8))
-		(line (pt 52 4)(pt 78 4))
-		(line (pt 52 12)(pt 78 12))
-		(line (pt 52 12)(pt 52 4))
-		(line (pt 78 4)(pt 82 8))
-		(line (pt 82 8)(pt 78 12))
-		(line (pt 78 12)(pt 82 8))
-	)
-	(annotation_block (location)(rect 744 -128 800 -112))
-)
-(pin
-	(output)
-	(rect -720 328 -544 344)
+	(rect -704 328 -528 344)
 	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
 	(text "MISC_E" (rect 90 0 130 12)(font "Arial" ))
 	(pt 0 8)
@@ -238,7 +221,22 @@ applicable agreement for further details.
 		(line (pt 82 8)(pt 78 12))
 		(line (pt 78 12)(pt 82 8))
 	)
-	(annotation_block (location)(rect -544 328 -488 344))
+)
+(pin
+	(output)
+	(rect 584 -128 760 -112)
+	(text "OUTPUT" (rect 1 0 39 10)(font "Arial" (font_size 6)))
+	(text "MISC_D" (rect 90 0 131 12)(font "Arial" ))
+	(pt 0 8)
+	(drawing
+		(line (pt 0 8)(pt 52 8))
+		(line (pt 52 4)(pt 78 4))
+		(line (pt 52 12)(pt 78 12))
+		(line (pt 52 12)(pt 52 4))
+		(line (pt 78 4)(pt 82 8))
+		(line (pt 82 8)(pt 78 12))
+		(line (pt 78 12)(pt 82 8))
+	)
 )
 (symbol
 	(rect -672 66 -640 98)
@@ -592,42 +590,7 @@ applicable agreement for further details.
 	)
 )
 (symbol
-	(rect -368 -208 -224 -128)
-	(text "RSSFilter_1" (rect 5 0 64 12)(font "Arial" ))
-	(text "inst_rss1" (rect 8 64 52 76)(font "Arial" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "clk" (rect 0 0 14 12)(font "Arial" ))
-		(text "clk" (rect 21 27 35 39)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "bit_in" (rect 0 0 25 12)(font "Arial" ))
-		(text "bit_in" (rect 21 43 46 55)(font "Arial" ))
-		(line (pt 0 48)(pt 16 48))
-	)
-	(port
-		(pt 144 32)
-		(output)
-		(text "bit_out" (rect 0 0 33 12)(font "Arial" ))
-		(text "bit_out" (rect 96 27 129 39)(font "Arial" ))
-		(line (pt 144 32)(pt 128 32))
-	)
-	(parameter
-		"TAPS"
-		"3"
-		""
-		(type "PARAMETER_SIGNED_DEC")	)
-	(drawing
-		(rectangle (rect 16 16 128 64))
-	)
-	(annotation_block (parameter)(rect -384 -240 -202 -212))
-)
-(symbol
-	(rect -168 160 56 336)
+	(rect -176 160 48 336)
 	(text "Distribute" (rect 5 0 52 12)(font "Arial" ))
 	(text "inst6" (rect 8 160 31 172)(font "Arial" ))
 	(port
@@ -809,7 +772,7 @@ applicable agreement for further details.
 	)
 	(parameter
 		"g_CLKS_PER_BIT"
-		"45"
+		"89"
 		""
 		(type "PARAMETER_SIGNED_DEC")	)
 	(drawing
@@ -844,13 +807,48 @@ applicable agreement for further details.
 	)
 	(parameter
 		"TAPS"
-		"5"
+		"8"
 		""
 		(type "PARAMETER_SIGNED_DEC")	)
 	(drawing
 		(rectangle (rect 16 16 128 64))
 	)
 	(annotation_block (parameter)(rect -680 160 -498 188))
+)
+(symbol
+	(rect -368 -208 -224 -128)
+	(text "RSSFilter_1" (rect 5 0 64 12)(font "Arial" ))
+	(text "inst_rss1" (rect 8 64 52 76)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "clk" (rect 0 0 14 12)(font "Arial" ))
+		(text "clk" (rect 21 27 35 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "bit_in" (rect 0 0 25 12)(font "Arial" ))
+		(text "bit_in" (rect 21 43 46 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 144 32)
+		(output)
+		(text "bit_out" (rect 0 0 33 12)(font "Arial" ))
+		(text "bit_out" (rect 96 27 129 39)(font "Arial" ))
+		(line (pt 144 32)(pt 128 32))
+	)
+	(parameter
+		"TAPS"
+		"8"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
+	(drawing
+		(rectangle (rect 16 16 128 64))
+	)
+	(annotation_block (parameter)(rect -384 -240 -202 -212))
 )
 (connector
 	(text "DATA[31..0]" (rect 712 128 772 140)(font "Arial" ))
@@ -1052,7 +1050,7 @@ applicable agreement for further details.
 	(pt -120 -176)
 )
 (connector
-	(text "RST" (rect -672 32 -660 53)(font "Arial" )(vertical))
+	(text "RST" (rect -671 33 -659 54)(font "Arial" )(vertical))
 	(pt -656 50)
 	(pt -656 66)
 )
@@ -1066,32 +1064,6 @@ applicable agreement for further details.
 	(pt -664 224)
 )
 (connector
-	(text "RST" (rect -456 -176 -435 -164)(font "Arial" ))
-	(pt -368 -160)
-	(pt -464 -160)
-)
-(connector
-	(text "COUNT[7]" (rect 472 -136 523 -124)(font "Arial" ))
-	(pt 568 -120)
-	(pt 464 -120)
-)
-(connector
-	(pt -760 240)
-	(pt -760 336)
-)
-(connector
-	(pt -760 336)
-	(pt -720 336)
-)
-(connector
-	(pt -792 240)
-	(pt -760 240)
-)
-(connector
-	(pt -760 240)
-	(pt -664 240)
-)
-(connector
 	(text "clk_8" (rect -472 192 -447 204)(font "Arial" ))
 	(pt -408 208)
 	(pt -480 208)
@@ -1101,9 +1073,9 @@ applicable agreement for further details.
 	(pt -408 224)
 )
 (connector
-	(text "CLK_8" (rect -208 176 -175 188)(font "Arial" ))
-	(pt -200 192)
-	(pt -168 192)
+	(text "CLK_8" (rect -216 176 -183 188)(font "Arial" ))
+	(pt -208 192)
+	(pt -176 192)
 )
 (connector
 	(pt 232 344)
@@ -1129,47 +1101,77 @@ applicable agreement for further details.
 )
 (connector
 	(pt -192 208)
-	(pt -168 208)
+	(pt -176 208)
 )
 (connector
 	(pt -192 224)
-	(pt -168 224)
+	(pt -176 224)
 	(bus)
 )
 (connector
-	(text "swap_out" (rect 96 176 142 188)(font "Arial" ))
-	(pt 56 192)
-	(pt 88 192)
+	(text "swap_out" (rect 88 176 134 188)(font "Arial" ))
+	(pt 48 192)
+	(pt 80 192)
 )
 (connector
-	(text "set_out" (rect 104 192 140 204)(font "Arial" ))
-	(pt 56 208)
-	(pt 88 208)
+	(text "set_out" (rect 96 192 132 204)(font "Arial" ))
+	(pt 48 208)
+	(pt 80 208)
 )
 (connector
-	(pt 56 240)
+	(pt 48 240)
 	(pt 296 240)
 	(bus)
 )
 (connector
-	(pt 56 256)
+	(pt 48 256)
 	(pt 320 256)
 	(bus)
 )
 (connector
-	(pt 56 272)
+	(pt 48 272)
 	(pt 232 272)
 )
 (connector
-	(pt 56 288)
+	(pt 48 288)
 	(pt 216 288)
 )
 (connector
-	(text "enableShiftClocks" (rect 64 288 153 300)(font "Arial" ))
-	(pt 56 304)
+	(text "enableShiftClocks" (rect 56 288 145 300)(font "Arial" ))
+	(pt 48 304)
 	(pt 168 304)
 )
-(junction (pt -760 240))
+(connector
+	(pt -752 240)
+	(pt -752 336)
+)
+(connector
+	(pt -752 336)
+	(pt -704 336)
+)
+(connector
+	(pt -792 240)
+	(pt -752 240)
+)
+(connector
+	(pt -752 240)
+	(pt -664 240)
+)
+(connector
+	(text "RST" (rect -456 -176 -435 -164)(font "Arial" ))
+	(pt -368 -160)
+	(pt -464 -160)
+)
+(connector
+	(pt 504 -120)
+	(pt 504 -128)
+)
+(connector
+	(text "COUNT[7]" (rect 512 -136 563 -124)(font "Arial" ))
+	(pt 584 -120)
+	(pt 504 -120)
+)
+(junction (pt -752 240))
 (text "CLK_8 is running at 10.24MHz" (rect -200 8 -29 22)(font "Arial" (font_size 8)))
 (text "COUNT[2]  is running at 1.28MHz " (rect -200 24 -12 38)(font "Arial" (font_size 8)))
 (text "UART is running at 230.4kBauds" (rect -376 112 -192 126)(font "Arial" (font_size 8)))
