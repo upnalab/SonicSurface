@@ -221,6 +221,7 @@ applicable agreement for further details.
 		(line (pt 82 8)(pt 78 12))
 		(line (pt 78 12)(pt 82 8))
 	)
+	(annotation_block (location)(rect -528 344 -472 360))
 )
 (pin
 	(output)
@@ -237,6 +238,7 @@ applicable agreement for further details.
 		(line (pt 82 8)(pt 78 12))
 		(line (pt 78 12)(pt 82 8))
 	)
+	(annotation_block (location)(rect 760 -112 816 -96))
 )
 (symbol
 	(rect -672 66 -640 98)
@@ -739,48 +741,6 @@ applicable agreement for further details.
 	)
 )
 (symbol
-	(rect -408 176 -192 256)
-	(text "UARTReader" (rect 5 0 69 12)(font "Arial" ))
-	(text "inst3" (rect 8 64 31 76)(font "Arial" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "i_Clk" (rect 0 0 24 12)(font "Arial" ))
-		(text "i_Clk" (rect 21 27 45 39)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "i_RX_Serial" (rect 0 0 55 12)(font "Arial" ))
-		(text "i_RX_Serial" (rect 21 43 76 55)(font "Arial" ))
-		(line (pt 0 48)(pt 16 48))
-	)
-	(port
-		(pt 216 32)
-		(output)
-		(text "o_RX_DV" (rect 0 0 48 12)(font "Arial" ))
-		(text "o_RX_DV" (rect 155 27 203 39)(font "Arial" ))
-		(line (pt 216 32)(pt 200 32))
-	)
-	(port
-		(pt 216 48)
-		(output)
-		(text "o_RX_Byte[7..0]" (rect 0 0 81 12)(font "Arial" ))
-		(text "o_RX_Byte[7..0]" (rect 127 43 208 55)(font "Arial" ))
-		(line (pt 216 48)(pt 200 48)(line_width 3))
-	)
-	(parameter
-		"g_CLKS_PER_BIT"
-		"89"
-		""
-		(type "PARAMETER_SIGNED_DEC")	)
-	(drawing
-		(rectangle (rect 16 16 200 64))
-	)
-	(annotation_block (parameter)(rect -408 128 -193 156))
-)
-(symbol
 	(rect -664 192 -520 272)
 	(text "RSSFilter_1" (rect 5 0 64 12)(font "Arial" ))
 	(text "inst_rss2" (rect 8 64 52 76)(font "Arial" ))
@@ -849,6 +809,48 @@ applicable agreement for further details.
 		(rectangle (rect 16 16 128 64))
 	)
 	(annotation_block (parameter)(rect -384 -240 -202 -212))
+)
+(symbol
+	(rect -408 176 -192 256)
+	(text "UARTReader" (rect 5 0 69 12)(font "Arial" ))
+	(text "inst3" (rect 8 64 31 76)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "i_Clk" (rect 0 0 24 12)(font "Arial" ))
+		(text "i_Clk" (rect 21 27 45 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "i_RX_Serial" (rect 0 0 55 12)(font "Arial" ))
+		(text "i_RX_Serial" (rect 21 43 76 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 216 32)
+		(output)
+		(text "o_RX_DV" (rect 0 0 48 12)(font "Arial" ))
+		(text "o_RX_DV" (rect 155 27 203 39)(font "Arial" ))
+		(line (pt 216 32)(pt 200 32))
+	)
+	(port
+		(pt 216 48)
+		(output)
+		(text "o_RX_Byte[7..0]" (rect 0 0 81 12)(font "Arial" ))
+		(text "o_RX_Byte[7..0]" (rect 127 43 208 55)(font "Arial" ))
+		(line (pt 216 48)(pt 200 48)(line_width 3))
+	)
+	(parameter
+		"g_CLKS_PER_BIT"
+		"45"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
+	(drawing
+		(rectangle (rect 16 16 200 64))
+	)
+	(annotation_block (parameter)(rect -408 128 -193 156))
 )
 (connector
 	(text "DATA[31..0]" (rect 712 128 772 140)(font "Arial" ))
