@@ -16,7 +16,7 @@ class SonicSurface:
     @staticmethod
     def listSerial():
         ports = serial.tools.list_ports.comports()
-        print("Available Serial Ports:")
+        print("Serial Ports:")
         for i, port in enumerate(ports, start=1):
             print(f"{i}: {port.device}")
             
@@ -31,7 +31,7 @@ class SonicSurface:
             indexPort = int(input("Enter index of serial port: "))
         selectedPort = serial.tools.list_ports.comports()[indexPort - 1]
         self.disconnect()
-        self.serialConn = serial.Serial(selectedPort, baudrate=230400)
+        self.serialConn = serial.Serial(selectedPort.name, baudrate=230400)
     
     #phases range from 0 to 2pi
     def sendPhases(self, phases):
@@ -40,18 +40,18 @@ class SonicSurface:
         #phasesDisc += self.phaseOffsets
         #phasesDisc %= self.PHASE_DIVS
         dataToSend = bytes( phasesDisc.astype(np.uint8) )
-        self.serialConn.write( bytes[254] ) #start phases
+        self.serialConn.write( bytes([254]) ) #start phases
         self.serialConn.write(dataToSend)
-        self.serialConn.write( bytes[253] ) #commit
+        self.serialConn.write( bytes([253]) ) #commit
         
     def switchOnOrOff(self, on):
         if on:
             dataToSend = bytes([0 for i in range(self.N_EMMITERS)])
         else:
             dataToSend = bytes([self.PHASE_DIVS for i in range(self.N_EMMITERS)])    
-        self.serialConn.write( bytes[254] ) #start phases
+        self.serialConn.write( bytes([254]) ) #start phases
         self.serialConn.write(dataToSend)
-        self.serialConn.write( bytes[253] ) #commit
+        self.serialConn.write( bytes([253]) ) #commit
         
     def focusAtPos(self, x,y,z):
         self.focusAt(np.array([x,y,z]))
@@ -59,7 +59,7 @@ class SonicSurface:
     def focusAt(self, pos):
         distances = np.linalg.norm(self.emittersPos - pos, axis=1)
         lambdas = distances / self.WAVELENGTH
-        frags = 1 - (np.ceil(lambdas) - lambdas)
+        frags = np.ceil(lambdas) - lambdas
         self.sendPhases( 2.0 * np.pi * frags )
         
     def multiFocusIBP(self, positions):
@@ -72,12 +72,25 @@ class SonicSurface:
         
 if __name__ == "__main__":
     import time
+    import pylab as pl
     array = SonicSurface()
     array.connect( -1 )
+   
     for _ in range(3):
         array.switchOnOrOff( True )
         time.sleep(1)
         array.switchOnOrOff( False )
         time.sleep(1)
-    array.focusAtPos(0,0.1,0)
     
+    dist = 0.19
+    rad = 0.04
+    array.focusAtPos(0,dist,0)
+    time.sleep(1)
+    for x in np.linspace(0.0,rad, 50):
+        array.focusAtPos(x,dist,0)
+        time.sleep(0.01)
+    for angle in np.linspace(0,4*np.pi, 250):
+        array.focusAtPos(np.cos(angle) * rad, dist, np.sin(angle) * rad)
+        time.sleep(0.01)
+    
+    array.disconnect()
