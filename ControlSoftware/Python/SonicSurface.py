@@ -1,6 +1,7 @@
 import serial
 import serial.tools.list_ports
 import numpy as np
+from Waves import Waves
 
 class SonicSurface:
     PHASE_DIVS = 32
@@ -12,6 +13,7 @@ class SonicSurface:
         self.serialConn = None
         self.emittersPos = np.array( self.EMITTERS_POS ).reshape(self.N_EMMITERS, 3)
         self.phaseOffsets = np.zeros( [self.N_EMMITERS] )
+        self.phases = np.zeros( [1,self.N_EMMITERS], dtype=np.complex128 )
    
     @staticmethod
     def listSerial():
@@ -62,17 +64,34 @@ class SonicSurface:
         frags = np.ceil(lambdas) - lambdas
         self.sendPhases( 2.0 * np.pi * frags )
         
-    def multiFocusIBP(self, positions):
-        #TODO
-        pass
+    def multiFocusIBP(self, points, iters=20, resetPhases=False):
+        propagators = Waves.calcPropagatorsPistonsToPoints(self.emittersPos, np.array([0,1,0]), points, self.WAVELENGTH*np.pi*2, 0.009)
+        backprops = np.conjugate( propagators )
+        if resetPhases:
+            self.phases *= 0
+        for _ in range(iters):
+            fieldAtPoints = self.phases * propagators #propagate emitters -> points
+            fieldAtPoints /= np.abs( fieldAtPoints ) #normalize points
+            self.phases = backprops * fieldAtPoints #backprop points <- emitters
+            self.phases /= np.abs( self.phases ) #normalize emitters
+        self.sendPhases( np.angle(self.phases) + np.pi )
         
     def multiFocusChecker(self, positions):
-        #TODO
-        pass
+        nPoints = positions.shape[0]
+        nEmitters = self.emittersPos.shape[0]
+        phases = np.zeros( [nEmitters] )
+        for i in range(nEmitters):
+            dist = np.linalg.norm(self.emittersPos[i,:] - positions[i % nPoints ,:])
+            lambdas = dist / self.WAVELENGTH
+            frags = np.ceil(lambdas) - lambdas
+            phases[i] = frags * 2.0 * np.pi
+        self.sendPhases( phases )
+        
+  
         
 if __name__ == "__main__":
     import time
-    import pylab as pl
+
     array = SonicSurface()
     array.connect( -1 )
    
