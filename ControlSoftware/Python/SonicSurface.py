@@ -33,7 +33,7 @@ class SonicSurface:
             indexPort = int(input("Enter index of serial port: "))
         selectedPort = serial.tools.list_ports.comports()[indexPort - 1]
         self.disconnect()
-        self.serialConn = serial.Serial(selectedPort.name, baudrate=230400)
+        self.serialConn = serial.Serial(selectedPort.device, baudrate=230400)
     
     #phases range from 0 to 2pi
     def sendPhases(self, phases):
@@ -107,9 +107,9 @@ if __name__ == "__main__":
     time.sleep(1)
     for x in np.linspace(0.0,rad, 50):
         array.focusAtPos(x,dist,0)
-        time.sleep(0.01)
-    for angle in np.linspace(0,4*np.pi, 250):
+        time.sleep(0.05)
+    for angle in np.linspace(0,4*np.pi, 350):
         array.focusAtPos(np.cos(angle) * rad, dist, np.sin(angle) * rad)
-        time.sleep(0.01)
+        time.sleep(0.05)
     
     array.disconnect()
