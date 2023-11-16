@@ -37,15 +37,16 @@ class SonicSurface:
         self.disconnect()
         self.serialConn = serial.Serial(selectedPort.device, baudrate=230400)
     
-    #phases range from 0 to 2pi
+    # Phases range from 0 to 2pi. NaN phase values are deactivated tranducers
     def sendPhases(self, phases):
         assert( phases.shape == (self.N_EMMITERS,) )
-        phasesDisc = (phases % (2*np.pi)) * self.PHASE_DIVS / 2 / np.pi
-        #phasesDisc += self.phaseOffsets
-        #phasesDisc %= self.PHASE_DIVS
-        dataToSend = bytes( phasesDisc.astype(np.uint8) )
+        deactivated = np.isnan(phases)
+        phases = (phases % (2*np.pi)) * self.PHASE_DIVS / 2 / np.pi
+        phases[deactivated] = self.PHASE_DIVS
+        dataToSend = np.empty(phases.size, np.uint8)
+        dataToSend[self.EMITTERS_ORDER] = phases
         self.serialConn.write( bytes([254]) ) #start phases
-        self.serialConn.write(dataToSend)
+        self.serialConn.write(bytes(dataToSend.astype(np.uint8)))
         self.serialConn.write( bytes([253]) ) #commit
 
     def switchOnOrOff(self, on):
