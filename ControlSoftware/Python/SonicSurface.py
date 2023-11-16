@@ -38,13 +38,14 @@ class SonicSurface:
         self.serialConn = serial.Serial(selectedPort.device, baudrate=230400)
     
     # Phases range from 0 to 2pi. NaN phase values are deactivated tranducers
-    def sendPhases(self, phases):
+    def sendPhases(self, phases, permuteToFPGAOrder=True):
         assert( phases.shape == (self.N_EMMITERS,) )
         deactivated = np.isnan(phases)
         phases = (phases % (2*np.pi)) * self.PHASE_DIVS / 2 / np.pi
         phases[deactivated] = self.PHASE_DIVS
         dataToSend = np.empty(phases.size, np.uint8)
-        dataToSend[self.EMITTERS_ORDER] = phases
+        order = self.EMITTERS_ORDER if permuteToFPGAOrder else np.arange(phases.size)
+        dataToSend[order] = phases
         self.serialConn.write( bytes([254]) ) #start phases
         self.serialConn.write(bytes(dataToSend.astype(np.uint8)))
         self.serialConn.write( bytes([253]) ) #commit
@@ -71,7 +72,7 @@ class SonicSurface:
         distances = np.linalg.norm(self.emittersPos - pos, axis=1)
         lambdas = distances / self.WAVELENGTH
         frags = np.ceil(lambdas) - lambdas
-        self.sendPhases( 2.0 * np.pi * frags )
+        self.sendPhases( 2.0 * np.pi * frags, False )
         
     def multiFocusIBP(self, points, iters=20, resetPhases=False):
         propagators = Waves.calcPropagatorsPistonsToPoints(self.emittersPos, np.array([0,1,0]), points, self.WAVELENGTH*np.pi*2, 0.009)
@@ -83,7 +84,7 @@ class SonicSurface:
             fieldAtPoints /= np.abs( fieldAtPoints ) #normalize points
             self.phases = backprops * fieldAtPoints #backprop points <- emitters
             self.phases /= np.abs( self.phases ) #normalize emitters
-        self.sendPhases( np.angle(self.phases) + np.pi )
+        self.sendPhases( np.angle(self.phases) + np.pi, False )
         
     def multiFocusChecker(self, positions):
         nPoints = positions.shape[0]
@@ -94,7 +95,7 @@ class SonicSurface:
             lambdas = dist / self.WAVELENGTH
             frags = np.ceil(lambdas) - lambdas
             phases[i] = frags * 2.0 * np.pi
-        self.sendPhases( phases )
+        self.sendPhases( phases, False )
         
   
         
