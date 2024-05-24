@@ -68,18 +68,31 @@ class SonicSurface:
     def focusAtPos(self, x,y,z):
         self.focusAt(np.array([x,y,z]))
         
-    def focusAt(self, pos):
+    def phasesForFocus(self, pos):
         distances = np.linalg.norm(self.emittersPos - pos, axis=1)
         lambdas = distances / self.WAVELENGTH
         frags = np.ceil(lambdas) - lambdas
-        self.sendPhases( 2.0 * np.pi * frags)
+        return 2.0 * np.pi * frags
+    
+    def focusAt(self, pos):
+        phases = self.phasesForFocus( pos )
+        self.sendPhases( phases )
+        
+    def vortexAt(self, x,y,z, topoCharge=1, discrete=False, rotation=0):
+        phases = self.phasesForFocus( np.array([x,y,z]) )
+        center = self.emittersPos.mean(axis=0)
+        diffs = self.emittersPos - center
+        angles = np.arctan2(diffs[:,0], diffs[:,2])
+        offsets = angles * topoCharge + rotation
+        if discrete:
+            offsets -= (offsets%np.pi)
+        self.sendPhases( phases + offsets)
         
     def multiFocusIBP(self, points, iters=20, resetPhases=True):
         propagators = SonicSurface.calcPropagatorsPistonsToPoints(
                 self.emittersPos, 
                 np.tile(np.array([0,1,0]), [self.N_EMMITERS,1]), 
                 points, self.WAVELENGTH*np.pi*2, 0.009)
-        propagators = np.conjugate( propagators )
         backprops = np.conjugate( propagators ).transpose()
         if resetPhases:
             self.ibpEmitters = np.ones( [1,self.N_EMMITERS], dtype=np.complex128 )
@@ -109,9 +122,9 @@ class SonicSurface:
         nn = np.sqrt(eNormal[0]*eNormal[0] + eNormal[1]*eNormal[1] + eNormal[2]*eNormal[2])
         angle = np.arccos((diff[:, 0]*eNormal[0] + diff[:, 1]*eNormal[1] + diff[:, 2]*eNormal[2])  /  nd / nn)
         dum = 0.5 * eApperture * k * np.sin(angle)
-        dire =  np.sinc(dum / np.pi)
-        prop =  dire / nd * np.exp(1j * k * nd )
-        return prop
+        dire = np.sinc(dum / np.pi)
+        props = dire / nd * np.exp(1j * k * nd )
+        return props
     
     @staticmethod
     def calcPropagatorsPistonsToPoints(ePositions, eNormals, pPositions, k, apperture):
