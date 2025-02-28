@@ -6,7 +6,7 @@ import keyboard
 dist = 0.18
 
 array = SonicSurface()
-array.connect( -1 , 230400)
+array.connect( -1 , 1462857)
 #for standard SonicSurface
 #for div7 use baudrate 1462857
 #for div4 (not working) 2000000 2048000 2560000
